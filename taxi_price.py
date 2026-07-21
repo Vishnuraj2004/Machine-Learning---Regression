@@ -152,6 +152,38 @@ div[data-testid="stMetricValue"] {{
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+
+
+}
+
+/* Selectbox */
+div[data-baseweb="select"] div {
+    color: white !important;
+    background-color: #2b2b2b !important;
+}
+
+/* Dropdown options */
+ul[role="listbox"] {
+    background-color: #2b2b2b !important;
+    color: white !important;
+}
+
+/* Labels */
+label {
+    color: white !important;
+    font-weight: bold;
+}
+
+/* Placeholder text */
+input::placeholder {
+    color: #cccccc !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 # =========================================================
 # HOME PAGE
 # =========================================================
@@ -220,23 +252,23 @@ else:
     # Main Layout Form Matrix
     input_left, input_right = st.columns(2)
 
-    with input_left:
-        with st.container():
-            st.markdown("<h4 style='color:#00F5FF;'>📏 Distance & Rates</h4>", unsafe_allow_html=True)
-            Trip_Distance_km = st.number_input("Trip Distance (km)", min_value=0.0, step=0.1 )
-            Base_Fare = st.number_input("Base Fare (₹)", min_value=0.0)
-            Per_Km_Rate = st.number_input("Per Km Rate (₹)", min_value=0.0)
-            Per_Minute_Rate = st.number_input("Per Minute Rate (₹)", min_value=0.0)
+    st.markdown(
+        "<h3 style='text-align:center; color:white;'>🚕 Enter Trip Details</h3>",
+        unsafe_allow_html=True
+    )
 
+    input_left, input_right = st.columns(2)
+
+    with input_left:
+        Trip_Distance_km = st.number_input("Trip Distance (km)", min_value=0.0, step=0.1)
+        Per_Km_Rate = st.number_input("Per Km Rate (₹)", min_value=0.0)
+        Trip_Duration_Minutes = st.number_input("Trip Duration (Minutes)", min_value=0)
+        Passenger_Count = st.number_input("Passenger Count", min_value=1, max_value=7, step=1)
     with input_right:
-        with st.container():
-            st.markdown("<h4 style='color:#FF00FF;'>⏱ Timing & Conditions</h4>", unsafe_allow_html=True)
-            Trip_Duration_Minutes = st.number_input("Trip Duration (Minutes)", min_value=0)
-            Passenger_Count = st.number_input("Passenger Count", min_value=1,max_value=7, step=1)
-            Time_of_Day = st.selectbox("Time of Day", list(le_time.classes_))
-            Day_of_Week = st.selectbox("Day of Week", list(le_day.classes_))
-            Traffic_Conditions = st.selectbox("Traffic Overhead", list(le_traffic.classes_))
-            Weather = st.selectbox("Weather Condition", list(le_weather.classes_))
+        Time_of_Day = st.selectbox("Time of Day", list(le_time.classes_))
+        Day_of_Week = st.selectbox("Day of Week", list(le_day.classes_))
+        Traffic_Conditions = st.selectbox("Traffic Overhead", list(le_traffic.classes_))
+        Weather = st.selectbox("Weather Condition", list(le_weather.classes_))
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -255,9 +287,7 @@ else:
             "Passenger_Count": Passenger_Count,
             "Traffic_Conditions": le_traffic.transform([Traffic_Conditions])[0],
             "Weather": le_weather.transform([Weather])[0],
-            "Base_Fare": Base_Fare,
             "Per_Km_Rate": Per_Km_Rate,
-            "Per_Minute_Rate": Per_Minute_Rate,
             "Trip_Duration_Minutes": Trip_Duration_Minutes
         }])
 
